@@ -57,7 +57,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 text-black">
             Why Choose MediStore?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -118,7 +118,7 @@ export default function Home() {
                 <Link
                   key={category.id}
                   href={`/shop?category=${category.id}`}
-                  className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-lg transition"
+                  className="bg-white border border-gray-200 rounded-lg p-6 text-center hover:shadow-lg transition text-black"
                 >
                   <h3 className="font-semibold text-lg">{category.name}</h3>
                 </Link>
@@ -131,11 +131,13 @@ export default function Home() {
       {/* Featured Medicines Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 text-black">
             Featured Medicines
           </h2>
           {loading ? (
-            <div className="text-center py-8">Loading medicines...</div>
+            <div className="text-center py-8 text-black">
+              Loading medicines...
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {featuredMedicines.map((medicine) => (
