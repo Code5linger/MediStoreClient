@@ -22,6 +22,8 @@ export default function OrdersPage() {
     fetchOrders();
   }, [session]);
 
+  console.log(session?.user.id);
+
   const fetchOrders = async () => {
     try {
       const res = await api.get('/orders');
