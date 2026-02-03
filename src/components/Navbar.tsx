@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { ShoppingCart, User, LogOut, Pill } from 'lucide-react';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useCartStore } from '@/store/cart';
 import { useSession } from '@/lib/auth-client';
+import { signOut } from 'better-auth/api';
 
 export default function Navbar() {
   const { data: session, isPending } = useSession();
   const totalItems = useCartStore((state) => state.getTotalItems());
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  //   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
