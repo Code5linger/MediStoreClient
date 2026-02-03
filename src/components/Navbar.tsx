@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession, signOut } from '@/lib/auth-client';
+// import { useSession, signOut } from '@/lib/auth-client';
 import { ShoppingCart, User, LogOut, Pill } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { useState } from 'react';
