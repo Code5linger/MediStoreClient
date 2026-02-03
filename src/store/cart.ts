@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-// import type { CartItem, Medicine } from '@/types';
+import type { CartItem, Medicine } from '@/types';
 
 interface CartState {
   items: CartItem[];
