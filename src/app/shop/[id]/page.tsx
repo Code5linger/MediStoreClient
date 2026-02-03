@@ -1,34 +1,205 @@
+// 'use client';
+
+// import { useEffect, useState } from 'react';
+// import { useParams, useRouter } from 'next/navigation';
+// import api from '@/lib/api';
+// import type { Medicine } from '@/types';
+// import { Pill, Minus, Plus } from 'lucide-react';
+// import { useCartStore } from '@/store/cart';
+// import toast from 'react-hot-toast';
+
+// export default function MedicineDetailsPage() {
+//   const params = useParams();
+//   const router = useRouter();
+//   const [medicine, setMedicine] = useState<Medicine | null>(null);
+//   const [loading, setLoading] = useState(true);
+//   const [quantity, setQuantity] = useState(1);
+
+//   const addToCart = useCartStore((state) => state.addToCart);
+
+//   useEffect(() => {
+//     fetchMedicine();
+//   }, [params.id]);
+
+//   const fetchMedicine = async () => {
+//     try {
+//       const res = await api.get(`/medicine`);
+//       const allMedicines = res.data;
+//       const found = allMedicines.find(
+//         (m: Medicine) => m.id === Number(params.id),
+//       );
+//       setMedicine(found || null);
+//     } catch (error) {
+//       console.error('Error fetching medicine:', error);
+//       toast.error('Failed to load medicine details');
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleAddToCart = () => {
+//     if (medicine && medicine.stock >= quantity) {
+//       addToCart(medicine, quantity);
+//       toast.success(`${medicine.name} added to cart!`);
+//       router.push('/cart');
+//     } else {
+//       toast.error('Not enough stock!');
+//     }
+//   };
+
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+//       </div>
+//     );
+//   }
+
+//   if (!medicine) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center">
+//         <div className="text-center">
+//           <Pill className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+//           <p className="text-gray-600 text-lg">Medicine not found</p>
+//         </div>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-50 py-8 text-black">
+//       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//         <div className="bg-white rounded-lg shadow-md overflow-hidden">
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+//             <div className="bg-gray-200 rounded-lg flex items-center justify-center h-96">
+//               {medicine.image ? (
+//                 <img
+//                   src={medicine.image}
+//                   alt={medicine.name}
+//                   className="w-full h-full object-cover rounded-lg"
+//                 />
+//               ) : (
+//                 <Pill className="w-32 h-32 text-gray-400" />
+//               )}
+//             </div>
+
+//             <div>
+//               <h1 className="text-3xl font-bold mb-4">{medicine.name}</h1>
+//               <p className="text-gray-600 mb-6">
+//                 {medicine.description || 'No description available'}
+//               </p>
+
+//               <div className="mb-6">
+//                 <span className="text-4xl font-bold text-blue-600">
+//                   ${medicine.price.toFixed(2)}
+//                 </span>
+//               </div>
+
+//               <div className="mb-6">
+//                 <span
+//                   className={`text-lg ${medicine.stock > 0 ? 'text-green-600' : 'text-red-600'}`}
+//                 >
+//                   {medicine.stock > 0
+//                     ? `${medicine.stock} units available`
+//                     : 'Out of stock'}
+//                 </span>
+//               </div>
+
+//               {medicine.stock > 0 && (
+//                 <>
+//                   <div className="mb-6">
+//                     <label className="block text-sm font-medium text-gray-700 mb-2">
+//                       Quantity
+//                     </label>
+//                     <div className="flex items-center space-x-4">
+//                       <button
+//                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
+//                         className="bg-gray-200 p-2 rounded-lg hover:bg-gray-300"
+//                       >
+//                         <Minus className="w-5 h-5" />
+//                       </button>
+//                       <span className="text-xl font-semibold w-12 text-center">
+//                         {quantity}
+//                       </span>
+//                       <button
+//                         onClick={() =>
+//                           setQuantity(Math.min(medicine.stock, quantity + 1))
+//                         }
+//                         className="bg-gray-200 p-2 rounded-lg hover:bg-gray-300"
+//                       >
+//                         <Plus className="w-5 h-5" />
+//                       </button>
+//                     </div>
+//                   </div>
+
+//                   <button
+//                     onClick={handleAddToCart}
+//                     className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+//                   >
+//                     Add to Cart
+//                   </button>
+//                 </>
+//               )}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
+
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import api from '@/lib/api';
-import type { Medicine } from '@/types';
-import { Pill, Minus, Plus } from 'lucide-react';
-import { useCartStore } from '@/store/cart';
 import toast from 'react-hot-toast';
+import { Star, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { useCartStore } from '@/store/cart';
 
-export default function MedicineDetailsPage() {
+interface Medicine {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  image: string | null;
+  category: {
+    id: number;
+    name: string;
+  };
+}
+
+interface Review {
+  id: number;
+  rating: number;
+  comment: string | null;
+  createdAt: string;
+  customer: {
+    id: string;
+    name: string;
+  };
+}
+
+export default function MedicineDetailPage() {
   const params = useParams();
   const router = useRouter();
   const [medicine, setMedicine] = useState<Medicine | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
-
   const addToCart = useCartStore((state) => state.addToCart);
 
   useEffect(() => {
-    fetchMedicine();
+    if (params.id) {
+      fetchMedicineDetails();
+      fetchReviews();
+    }
   }, [params.id]);
 
-  const fetchMedicine = async () => {
+  const fetchMedicineDetails = async () => {
     try {
-      const res = await api.get(`/medicine`);
-      const allMedicines = res.data;
-      const found = allMedicines.find(
-        (m: Medicine) => m.id === Number(params.id),
-      );
-      setMedicine(found || null);
+      const response = await api.get(`/medicine/${params.id}`);
+      setMedicine(response.data);
     } catch (error) {
       console.error('Error fetching medicine:', error);
       toast.error('Failed to load medicine details');
@@ -37,19 +208,49 @@ export default function MedicineDetailsPage() {
     }
   };
 
-  const handleAddToCart = () => {
-    if (medicine && medicine.stock >= quantity) {
-      addToCart(medicine, quantity);
-      toast.success(`${medicine.name} added to cart!`);
-      router.push('/cart');
-    } else {
-      toast.error('Not enough stock!');
+  const fetchReviews = async () => {
+    try {
+      const response = await api.get(`/reviews?medicineId=${params.id}`);
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
     }
+  };
+
+  const handleAddToCart = () => {
+    if (medicine && medicine.stock > 0) {
+      addToCart(medicine, 1);
+      toast.success(`${medicine.name} added to cart!`);
+    }
+  };
+
+  const calculateAverageRating = () => {
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+    return sum / reviews.length;
+  };
+
+  const renderStars = (rating: number, size: 'sm' | 'lg' = 'sm') => {
+    const starSize = size === 'sm' ? 'w-4 h-4' : 'w-6 h-6';
+    return (
+      <div className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <Star
+            key={star}
+            className={`${starSize} ${
+              star <= rating
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'text-gray-300'
+            }`}
+          />
+        ))}
+      </div>
+    );
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -57,37 +258,58 @@ export default function MedicineDetailsPage() {
 
   if (!medicine) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <Pill className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 text-lg">Medicine not found</p>
+          <p className="text-gray-600 text-lg mb-4">Medicine not found</p>
+          <button
+            onClick={() => router.push('/shop')}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            Back to Shop
+          </button>
         </div>
       </div>
     );
   }
 
+  const averageRating = calculateAverageRating();
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 text-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 text-blue-600 hover:text-blue-700 mb-6"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
+
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-            <div className="bg-gray-200 rounded-lg flex items-center justify-center h-96">
-              {medicine.image ? (
-                <img
-                  src={medicine.image}
-                  alt={medicine.name}
-                  className="w-full h-full object-cover rounded-lg"
-                />
-              ) : (
-                <Pill className="w-32 h-32 text-gray-400" />
-              )}
+            <div>
+              <img
+                src={medicine.image || '/placeholder-medicine.jpg'}
+                alt={medicine.name}
+                className="w-full h-96 object-cover rounded-lg"
+              />
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold mb-4">{medicine.name}</h1>
-              <p className="text-gray-600 mb-6">
-                {medicine.description || 'No description available'}
-              </p>
+              <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                {medicine.category.name}
+              </span>
+              <h1 className="text-4xl font-bold mb-4">{medicine.name}</h1>
+
+              <div className="flex items-center gap-4 mb-4">
+                {renderStars(averageRating, 'lg')}
+                <span className="text-gray-600">
+                  {averageRating.toFixed(1)} ({reviews.length}{' '}
+                  {reviews.length === 1 ? 'review' : 'reviews'})
+                </span>
+              </div>
+
+              <p className="text-gray-600 mb-6">{medicine.description}</p>
 
               <div className="mb-6">
                 <span className="text-4xl font-bold text-blue-600">
@@ -97,51 +319,68 @@ export default function MedicineDetailsPage() {
 
               <div className="mb-6">
                 <span
-                  className={`text-lg ${medicine.stock > 0 ? 'text-green-600' : 'text-red-600'}`}
+                  className={`inline-block px-4 py-2 rounded-lg ${
+                    medicine.stock > 0
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  }`}
                 >
                   {medicine.stock > 0
-                    ? `${medicine.stock} units available`
+                    ? `${medicine.stock} in stock`
                     : 'Out of stock'}
                 </span>
               </div>
 
-              {medicine.stock > 0 && (
-                <>
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Quantity
-                    </label>
-                    <div className="flex items-center space-x-4">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="bg-gray-200 p-2 rounded-lg hover:bg-gray-300"
-                      >
-                        <Minus className="w-5 h-5" />
-                      </button>
-                      <span className="text-xl font-semibold w-12 text-center">
-                        {quantity}
-                      </span>
-                      <button
-                        onClick={() =>
-                          setQuantity(Math.min(medicine.stock, quantity + 1))
-                        }
-                        className="bg-gray-200 p-2 rounded-lg hover:bg-gray-300"
-                      >
-                        <Plus className="w-5 h-5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleAddToCart}
-                    className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-                  >
-                    Add to Cart
-                  </button>
-                </>
-              )}
+              <button
+                onClick={handleAddToCart}
+                disabled={medicine.stock === 0}
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                Add to Cart
+              </button>
             </div>
           </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="bg-white rounded-lg shadow-md p-8">
+          <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+
+          {reviews.length === 0 ? (
+            <p className="text-gray-600 text-center py-8">
+              No reviews yet. Be the first to review this product!
+            </p>
+          ) : (
+            <div className="space-y-6">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="border-b border-gray-200 pb-6 last:border-b-0"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div>
+                      <p className="font-semibold">{review.customer.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {new Date(review.createdAt).toLocaleDateString(
+                          'en-US',
+                          {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          },
+                        )}
+                      </p>
+                    </div>
+                    {renderStars(review.rating)}
+                  </div>
+                  {review.comment && (
+                    <p className="text-gray-700 mt-2">{review.comment}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
