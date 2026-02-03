@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cart';
 import { useSession } from '@/lib/auth-client';
@@ -13,6 +13,28 @@ export default function CheckoutPage() {
   const { items, getTotalAmount, clearCart } = useCartStore();
   const [loading, setLoading] = useState(false);
   const [shippingAddress, setShippingAddress] = useState('');
+
+  // Move redirects to useEffect
+  useEffect(() => {
+    if (!session?.user) {
+      router.push('/login');
+      return;
+    }
+
+    if (items.length === 0) {
+      router.push('/cart');
+      return;
+    }
+  }, [session, items.length, router]);
+
+  // Show loading state while redirecting
+  if (!session?.user || items.length === 0) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (!session?.user) {
     router.push('/login');
@@ -51,7 +73,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 text-black">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-4xl font-bold mb-8">Checkout</h1>
 
