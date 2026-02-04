@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
@@ -139,8 +138,9 @@ export default function AdminDashboard() {
       await api.patch(`/admin/users/${userId}/toggle`);
       toast.success('User status updated');
       fetchUsers();
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Failed to update user');
+    } catch (error) {
+      const err = error as { response?: { data?: { error?: string } } };
+      toast.error(err.response?.data?.error || 'Failed...');
     } finally {
       setTogglingUserId(null);
     }
@@ -187,8 +187,9 @@ export default function AdminDashboard() {
       setEditingCategory(null);
       setCategoryFormData({ name: '' });
       fetchCategories();
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Failed to save category');
+    } catch (error) {
+      const err = error as { response?: { data?: { error?: string } } };
+      toast.error(err.response?.data?.error || 'Failed...');
     }
   };
 
@@ -201,8 +202,9 @@ export default function AdminDashboard() {
       toast.success('Category deleted successfully');
       setDeletingCategoryId(null);
       fetchCategories();
-    } catch (error: any) {
-      toast.error(error.response?.data?.error || 'Failed to delete category');
+    } catch (error) {
+      const err = error as { response?: { data?: { error?: string } } };
+      toast.error(err.response?.data?.error || 'Failed...');
     }
   };
 
@@ -231,15 +233,15 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-gray-50 py-8 text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+        <div className="mb-6 text-black">
+          <h1 className="text-4xl font-bold text-black">Admin Dashboard</h1>
           <p className="text-gray-600 mt-2">
             Manage users, medicines, orders, and categories
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex space-x-1 bg-gray-200 rounded-lg p-1 mb-6 w-fit">
+        <div className="flex space-x-1 bg-gray-200 text-black rounded-lg p-1 mb-6 w-fit">
           <button
             onClick={() => setActiveTab('users')}
             className={`flex items-center space-x-2 px-5 py-2 rounded-md font-medium transition ${
@@ -288,7 +290,7 @@ export default function AdminDashboard() {
 
         {/* ════════════════ USERS TAB ════════════════ */}
         {activeTab === 'users' && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white text-black rounded-lg shadow-md overflow-hidden">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold">All Users</h2>
             </div>
@@ -396,7 +398,7 @@ export default function AdminDashboard() {
 
         {/* ════════════════ MEDICINES TAB ════════════════ */}
         {activeTab === 'medicines' && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white text-black rounded-lg shadow-md overflow-hidden">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold">All Medicines</h2>
             </div>
@@ -482,7 +484,7 @@ export default function AdminDashboard() {
 
         {/* ════════════════ ORDERS TAB ════════════════ */}
         {activeTab === 'orders' && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white text-black rounded-lg shadow-md overflow-hidden">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold">All Orders</h2>
             </div>
@@ -580,7 +582,7 @@ export default function AdminDashboard() {
 
         {/* ════════════════ CATEGORIES TAB ════════════════ */}
         {activeTab === 'categories' && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white text-black rounded-lg shadow-md overflow-hidden">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
               <h2 className="text-2xl font-bold">Categories</h2>
               {!showCategoryForm && (
