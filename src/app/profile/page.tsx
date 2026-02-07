@@ -384,7 +384,7 @@ export default function ProfilePage() {
         field === 'name' ? { name: formData.name } : { email: formData.email };
 
       // Use Better-Auth's updateUser method
-      const { data, error: updateError } = await authClient.updateUser(payload);
+      const { error: updateError } = await authClient.updateUser(payload);
 
       if (updateError) {
         setError(updateError.message || 'Update failed');
@@ -395,8 +395,10 @@ export default function ProfilePage() {
       // Refresh the page to get updated session data
       router.refresh();
       setEditing(null);
-    } catch (err: any) {
-      setError(err?.message || 'Something went wrong');
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Something went wrong';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

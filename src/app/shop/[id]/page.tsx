@@ -150,25 +150,14 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
 import { Star, ShoppingCart, ArrowLeft } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
-
-interface Medicine {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  image: string | null;
-  category: {
-    id: number;
-    name: string;
-  };
-}
+import type { Medicine } from '@/types';
 
 interface Review {
   id: number;
@@ -189,14 +178,7 @@ export default function MedicineDetailPage() {
   const [loading, setLoading] = useState(true);
   const addToCart = useCartStore((state) => state.addToCart);
 
-  useEffect(() => {
-    if (params.id) {
-      fetchMedicineDetails();
-      fetchReviews();
-    }
-  }, [params.id]);
-
-  const fetchMedicineDetails = async () => {
+  const fetchMedicineDetails = useCallback(async () => {
     try {
       const response = await api.get(`/medicine/${params.id}`);
       setMedicine(response.data);
@@ -206,16 +188,23 @@ export default function MedicineDetailPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id]);
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       const response = await api.get(`/reviews?medicineId=${params.id}`);
       setReviews(response.data);
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
-  };
+  }, [params.id]);
+
+  useEffect(() => {
+    if (params.id) {
+      fetchMedicineDetails();
+      fetchReviews();
+    }
+  }, [params.id, fetchMedicineDetails, fetchReviews]);
 
   const handleAddToCart = () => {
     if (medicine && medicine.stock > 0) {
@@ -287,17 +276,20 @@ export default function MedicineDetailPage() {
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
-            <div>
-              <img
+            <div className="relative w-full h-96">
+              <Image
                 src={medicine.image || '/placeholder-medicine.jpg'}
                 alt={medicine.name}
-                className="w-full h-96 object-cover rounded-lg"
+                fill
+                className="object-cover rounded-lg"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
               />
             </div>
 
             <div>
               <span className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                {medicine.category.name}
+                {medicine.category?.name || 'General'}
               </span>
               <h1 className="text-4xl font-bold mb-4">{medicine.name}</h1>
 

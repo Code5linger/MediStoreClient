@@ -249,6 +249,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { Pill } from 'lucide-react';
+import { signIn } from '@/lib/auth-client';
+
+// import { signIn } from '@/lib/auth-client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -258,38 +261,75 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth/sign-in/email`,
+  //       {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         credentials: 'include', // CRITICAL
+  //         body: JSON.stringify({
+  //           email: formData.email,
+  //           password: formData.password,
+  //         }),
+  //       },
+  //     );
+
+  //     const data = await response.json();
+
+  //     if (!response.ok) {
+  //       throw new Error(data.error || 'Login failed');
+  //     }
+
+  //     toast.success('Login successful!');
+
+  //     // Force a full page reload to ensure session is loaded
+  //     window.location.href = '/';
+  //   } catch (error: any) {
+  //     toast.error(error.message || 'Login failed');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth/sign-in/email`,
+      await signIn.email(
         {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          onSuccess: async (ctx) => {
+            toast.success('Login successful!');
+
+            // Wait a bit for the session to be set
+            await new Promise((resolve) => setTimeout(resolve, 500));
+
+            // Force a hard navigation to ensure session is loaded
+            window.location.href = '/';
           },
-          credentials: 'include', // CRITICAL
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-          }),
+          onError: (ctx) => {
+            const errorMessage = ctx.error.message || 'Login failed';
+            toast.error(errorMessage);
+            console.error('Login error:', ctx.error);
+          },
         },
       );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
-      }
-
-      toast.success('Login successful!');
-
-      // Force a full page reload to ensure session is loaded
-      window.location.href = '/';
-    } catch (error: any) {
-      toast.error(error.message || 'Login failed');
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Login failed';
+      toast.error(errorMessage);
+      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
