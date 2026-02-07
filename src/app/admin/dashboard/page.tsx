@@ -228,7 +228,7 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
+  // Updated
   return (
     <div className="min-h-screen bg-gray-50 py-8 text-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
