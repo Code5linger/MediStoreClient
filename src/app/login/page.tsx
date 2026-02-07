@@ -242,6 +242,182 @@
 // }
 
 // app/login/page.tsx
+// 'use client';
+
+// import { useState } from 'react';
+// import { useRouter } from 'next/navigation';
+// import Link from 'next/link';
+// import toast from 'react-hot-toast';
+// import { Pill } from 'lucide-react';
+// import { signIn } from '@/lib/auth-client';
+
+// // import { signIn } from '@/lib/auth-client';
+
+// export default function LoginPage() {
+//   const router = useRouter();
+//   const [formData, setFormData] = useState({
+//     email: '',
+//     password: '',
+//   });
+//   const [loading, setLoading] = useState(false);
+
+//   // const handleSubmit = async (e: React.FormEvent) => {
+//   //   e.preventDefault();
+//   //   setLoading(true);
+
+//   //   try {
+//   //     const response = await fetch(
+//   //       `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth/sign-in/email`,
+//   //       {
+//   //         method: 'POST',
+//   //         headers: {
+//   //           'Content-Type': 'application/json',
+//   //         },
+//   //         credentials: 'include', // CRITICAL
+//   //         body: JSON.stringify({
+//   //           email: formData.email,
+//   //           password: formData.password,
+//   //         }),
+//   //       },
+//   //     );
+
+//   //     const data = await response.json();
+
+//   //     if (!response.ok) {
+//   //       throw new Error(data.error || 'Login failed');
+//   //     }
+
+//   //     toast.success('Login successful!');
+
+//   //     // Force a full page reload to ensure session is loaded
+//   //     window.location.href = '/';
+//   //   } catch (error: any) {
+//   //     toast.error(error.message || 'Login failed');
+//   //   } finally {
+//   //     setLoading(false);
+//   //   }
+//   // };
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       await signIn.email(
+//         {
+//           email: formData.email,
+//           password: formData.password,
+//         },
+//         {
+//           onSuccess: async (ctx) => {
+//             toast.success('Login successful!');
+
+//             // Wait a bit for the session to be set
+//             await new Promise((resolve) => setTimeout(resolve, 500));
+
+//             // Force a hard navigation to ensure session is loaded
+//             window.location.href = '/';
+//           },
+//           onError: (ctx) => {
+//             const errorMessage = ctx.error.message || 'Login failed';
+//             toast.error(errorMessage);
+//             console.error('Login error:', ctx.error);
+//           },
+//         },
+//       );
+//     } catch (error) {
+//       const errorMessage =
+//         error instanceof Error ? error.message : 'Login failed';
+//       toast.error(errorMessage);
+//       console.error('Login error:', error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 text-black">
+//       <div className="max-w-md w-full space-y-8">
+//         <div>
+//           <div className="flex justify-center">
+//             <Pill className="w-12 h-12 text-blue-600" />
+//           </div>
+//           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+//             Sign in to your account
+//           </h2>
+//           <p className="mt-2 text-center text-sm text-gray-600">
+//             Or{' '}
+//             <Link
+//               href="/register"
+//               className="font-medium text-blue-600 hover:text-blue-500"
+//             >
+//               create a new account
+//             </Link>
+//           </p>
+//         </div>
+
+//         <form className="mt-8 space-y-6 text-black" onSubmit={handleSubmit}>
+//           <div className="space-y-4">
+//             <div>
+//               <label
+//                 htmlFor="email"
+//                 className="block text-sm font-medium text-gray-700"
+//               >
+//                 Email address
+//               </label>
+//               <input
+//                 id="email"
+//                 name="email"
+//                 type="email"
+//                 autoComplete="email"
+//                 required
+//                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+//                 placeholder="john@example.com"
+//                 value={formData.email}
+//                 onChange={(e) =>
+//                   setFormData({ ...formData, email: e.target.value })
+//                 }
+//               />
+//             </div>
+
+//             <div>
+//               <label
+//                 htmlFor="password"
+//                 className="block text-sm font-medium text-gray-700"
+//               >
+//                 Password
+//               </label>
+//               <input
+//                 id="password"
+//                 name="password"
+//                 type="password"
+//                 autoComplete="current-password"
+//                 required
+//                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+//                 placeholder="••••••••"
+//                 value={formData.password}
+//                 onChange={(e) =>
+//                   setFormData({ ...formData, password: e.target.value })
+//                 }
+//               />
+//             </div>
+//           </div>
+
+//           <div>
+//             <button
+//               type="submit"
+//               disabled={loading}
+//               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+//             >
+//               {loading ? 'Signing in...' : 'Sign in'}
+//             </button>
+//           </div>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
 'use client';
 
 import { useState } from 'react';
@@ -251,8 +427,6 @@ import toast from 'react-hot-toast';
 import { Pill } from 'lucide-react';
 import { signIn } from '@/lib/auth-client';
 
-// import { signIn } from '@/lib/auth-client';
-
 export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -261,75 +435,49 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const response = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BETTER_AUTH_URL}/api/auth/sign-in/email`,
-  //       {
-  //         method: 'POST',
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //         },
-  //         credentials: 'include', // CRITICAL
-  //         body: JSON.stringify({
-  //           email: formData.email,
-  //           password: formData.password,
-  //         }),
-  //       },
-  //     );
-
-  //     const data = await response.json();
-
-  //     if (!response.ok) {
-  //       throw new Error(data.error || 'Login failed');
-  //     }
-
-  //     toast.success('Login successful!');
-
-  //     // Force a full page reload to ensure session is loaded
-  //     window.location.href = '/';
-  //   } catch (error: any) {
-  //     toast.error(error.message || 'Login failed');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
+    console.log('🔐 Starting login process...');
+    console.log('📧 Email:', formData.email);
+    console.log('🌐 Backend URL:', process.env.NEXT_PUBLIC_BETTER_AUTH_URL);
+
     try {
-      await signIn.email(
+      const result = await signIn.email(
         {
           email: formData.email,
           password: formData.password,
         },
         {
           onSuccess: async (ctx) => {
+            console.log('✅ Login successful!', ctx);
             toast.success('Login successful!');
+
+            // Check if cookies are set
+            console.log('🍪 Document cookies:', document.cookie);
 
             // Wait a bit for the session to be set
             await new Promise((resolve) => setTimeout(resolve, 500));
 
             // Force a hard navigation to ensure session is loaded
+            console.log('🔄 Redirecting to home page...');
             window.location.href = '/';
           },
           onError: (ctx) => {
+            console.error('❌ Login error:', ctx.error);
             const errorMessage = ctx.error.message || 'Login failed';
             toast.error(errorMessage);
-            console.error('Login error:', ctx.error);
           },
         },
       );
+
+      console.log('📦 Sign in result:', result);
     } catch (error) {
+      console.error('💥 Caught error during login:', error);
       const errorMessage =
         error instanceof Error ? error.message : 'Login failed';
       toast.error(errorMessage);
-      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
@@ -353,6 +501,17 @@ export default function LoginPage() {
             >
               create a new account
             </Link>
+          </p>
+        </div>
+
+        {/* Debug info - REMOVE THIS IN PRODUCTION */}
+        <div className="bg-yellow-50 p-4 rounded-md text-xs">
+          <p>
+            <strong>Backend URL:</strong>{' '}
+            {process.env.NEXT_PUBLIC_BETTER_AUTH_URL}
+          </p>
+          <p>
+            <strong>Current cookies:</strong> {document.cookie || 'None'}
           </p>
         </div>
 
