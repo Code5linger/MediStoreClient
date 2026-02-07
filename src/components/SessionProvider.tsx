@@ -1,58 +1,10 @@
-// 'use client';
-
-// import { useEffect } from 'react';
-// import { useSession } from '@/lib/auth-client';
-// import { useRouter, usePathname } from 'next/navigation';
-
-// const publicPaths = ['/', '/login', '/register', '/shop'];
-
-// export default function SessionProvider({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-//   const { data: session, isPending } = useSession();
-//   const router = useRouter();
-//   const pathname = usePathname();
-
-//   useEffect(() => {
-//     // Wait for session check to complete
-//     if (isPending) return;
-
-//     // If no session and trying to access protected route
-//     const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
-
-//     if (!session && !isPublicPath) {
-//       router.push('/login');
-//     }
-//   }, [session, isPending, pathname, router]);
-
-//   // Show loading while checking session
-//   if (isPending) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center">
-//         <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-//       </div>
-//     );
-//   }
-
-//   return <>{children}</>;
-// }
-
 'use client';
 
 import { useEffect } from 'react';
 import { useSession } from '@/lib/auth-client';
 import { useRouter, usePathname } from 'next/navigation';
 
-// Routes that require authentication
-const protectedPaths = [
-  '/admin',
-  '/orders',
-  '/profile',
-  '/checkout',
-  '/dashboard',
-];
+const publicPaths = ['/', '/login', '/register', '/shop'];
 
 export default function SessionProvider({
   children,
@@ -67,18 +19,66 @@ export default function SessionProvider({
     // Wait for session check to complete
     if (isPending) return;
 
-    // Check if current path requires authentication
-    const isProtectedPath = protectedPaths.some((path) =>
-      pathname.startsWith(path),
-    );
+    // If no session and trying to access protected route
+    const isPublicPath = publicPaths.some((path) => pathname.startsWith(path));
 
-    // If accessing protected route without session, redirect to login
-    if (!session && isProtectedPath) {
-      console.log('Protected route requires login:', pathname);
-      router.push(`/login?redirect=${pathname}`);
+    if (!session && !isPublicPath) {
+      router.push('/login');
     }
   }, [session, isPending, pathname, router]);
 
-  // Always render children - don't block the app
+  // Show loading while checking session
+  if (isPending) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
   return <>{children}</>;
 }
+
+// 'use client';
+
+// import { useEffect } from 'react';
+// import { useSession } from '@/lib/auth-client';
+// import { useRouter, usePathname } from 'next/navigation';
+
+// // Routes that require authentication
+// const protectedPaths = [
+//   '/admin',
+//   '/orders',
+//   '/profile',
+//   '/checkout',
+//   '/dashboard',
+// ];
+
+// export default function SessionProvider({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   const { data: session, isPending } = useSession();
+//   const router = useRouter();
+//   const pathname = usePathname();
+
+//   useEffect(() => {
+//     // Wait for session check to complete
+//     if (isPending) return;
+
+//     // Check if current path requires authentication
+//     const isProtectedPath = protectedPaths.some((path) =>
+//       pathname.startsWith(path),
+//     );
+
+//     // If accessing protected route without session, redirect to login
+//     if (!session && isProtectedPath) {
+//       console.log('Protected route requires login:', pathname);
+//       router.push(`/login?redirect=${pathname}`);
+//     }
+//   }, [session, isPending, pathname, router]);
+
+//   // Always render children - don't block the app
+//   return <>{children}</>;
+// }

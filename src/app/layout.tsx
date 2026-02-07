@@ -1,42 +1,10 @@
-// import type { Metadata } from 'next';
-// import { Inter } from 'next/font/google';
-// import './globals.css';
-// import { Toaster } from 'react-hot-toast';
-// import Navbar from '@/components/Navbar';
-// import Footer from '@/components/Footer';
-// import SessionProvider from '@/components/SessionProvider';
-
-// const inter = Inter({ subsets: ['latin'] });
-
-// export const metadata: Metadata = {
-//   title: 'MediStore - Your Trusted Online Medicine Shop',
-//   description: 'Purchase over-the-counter medicines online with ease',
-// };
-
-// export default function RootLayout({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode;
-// }>) {
-//   return (
-//     <html lang="en">
-//       <body className={inter.className}>
-//         <SessionProvider>
-//           <Navbar />
-//           <main className="min-h-screen">{children}</main>
-//           <Footer />
-//           <Toaster position="top-right" />
-//         </SessionProvider>
-//       </body>
-//     </html>
-//   );
-// }
-
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/Navbar';
 import { Toaster } from 'react-hot-toast';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import SessionProvider from '@/components/SessionProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -47,20 +15,52 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* Don't use useSession here - it blocks everything */}
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <footer className="bg-gray-900 text-white">
-          {/* Your footer content */}
-        </footer>
-        <Toaster position="top-right" />
+        <SessionProvider>
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+          <Toaster position="top-right" />
+        </SessionProvider>
       </body>
     </html>
   );
 }
+
+// import type { Metadata } from 'next';
+// import { Inter } from 'next/font/google';
+// import './globals.css';
+// import Navbar from '@/components/Navbar';
+// import { Toaster } from 'react-hot-toast';
+
+// const inter = Inter({ subsets: ['latin'] });
+
+// export const metadata: Metadata = {
+//   title: 'MediStore - Your Trusted Online Medicine Shop',
+//   description: 'Purchase over-the-counter medicines online with ease',
+// };
+
+// export default function RootLayout({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   return (
+//     <html lang="en">
+//       <body className={inter.className}>
+//         {/* Don't use useSession here - it blocks everything */}
+//         <Navbar />
+//         <main className="min-h-screen">{children}</main>
+//         <footer className="bg-gray-900 text-white">
+//           {/* Your footer content */}
+//         </footer>
+//         <Toaster position="top-right" />
+//       </body>
+//     </html>
+//   );
+// }

@@ -38,44 +38,6 @@
 //   updatedAt: Date;
 // }
 
-// 'use client';
-
-// import { createAuthClient } from 'better-auth/react';
-// import type { Session } from 'better-auth/types';
-
-// // Define your custom user type
-// export interface CustomUser {
-//   id: string;
-//   name: string;
-//   email: string;
-//   emailVerified: boolean;
-//   image?: string | null;
-//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
-//   createdAt: Date;
-//   updatedAt: Date;
-// }
-
-// // Extend Better Auth session type
-// export interface CustomSession extends Omit<Session, 'user'> {
-//   user: CustomUser;
-// }
-
-// export const authClient = createAuthClient({
-//   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:5000',
-// });
-
-// // Export the hooks with proper typing
-// export const { signIn, signUp, signOut } = authClient;
-
-// // Create a typed version of useSession
-// export const useSession = () => {
-//   return authClient.useSession() as {
-//     data: CustomSession | null;
-//     isPending: boolean;
-//     error: Error | null;
-//   };
-// };
-
 'use client';
 
 import { createAuthClient } from 'better-auth/react';
@@ -100,9 +62,6 @@ export interface CustomSession extends Omit<Session, 'user'> {
 
 export const authClient = createAuthClient({
   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:5000',
-  fetchOptions: {
-    credentials: 'include', // CRITICAL: This ensures cookies are sent
-  },
 });
 
 // Export the hooks with proper typing
@@ -116,3 +75,83 @@ export const useSession = () => {
     error: Error | null;
   };
 };
+
+// 'use client';
+
+// import { createAuthClient } from 'better-auth/react';
+// import type { Session } from 'better-auth/types';
+
+// // Define your custom user type
+// export interface CustomUser {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: boolean;
+//   image?: string | null;
+//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+// // Extend Better Auth session type
+// export interface CustomSession extends Omit<Session, 'user'> {
+//   user: CustomUser;
+// }
+
+// export const authClient = createAuthClient({
+//   baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:5000',
+//   fetchOptions: {
+//     credentials: 'include', // CRITICAL: This ensures cookies are sent
+//   },
+// });
+
+// // Export the hooks with proper typing
+// export const { signIn, signUp, signOut } = authClient;
+
+// // Create a typed version of useSession
+// export const useSession = () => {
+//   return authClient.useSession() as {
+//     data: CustomSession | null;
+//     isPending: boolean;
+//     error: Error | null;
+//   };
+// };
+
+// 'use client';
+
+// import { createAuthClient } from 'better-auth/react';
+// import type { Session } from 'better-auth/types';
+
+// export interface CustomUser {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: boolean;
+//   image?: string | null;
+//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+// export interface CustomSession extends Omit<Session, 'user'> {
+//   user: CustomUser;
+// }
+
+// export const authClient = createAuthClient({
+//   baseURL:
+//     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+//     'https://medi-store-server-rho.vercel.app',
+//   fetchOptions: {
+//     credentials: 'include',
+//   },
+// });
+
+// export const { signIn, signUp, signOut } = authClient;
+
+// export const useSession = () => {
+//   return authClient.useSession() as {
+//     data: CustomSession | null;
+//     isPending: boolean;
+//     error: Error | null;
+//   };
+// };
