@@ -201,11 +201,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signUp } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
 import { Pill } from 'lucide-react';
 import type { UserRole } from '@/types';
-import api from '@/lib/api';
 
 export default function RegisterPage() {
   const router = useRouter();

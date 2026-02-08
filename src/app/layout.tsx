@@ -1,10 +1,8 @@
 // import type { Metadata } from 'next';
 // import { Inter } from 'next/font/google';
 // import './globals.css';
-// import { Toaster } from 'react-hot-toast';
 // import Navbar from '@/components/Navbar';
-// import Footer from '@/components/Footer';
-// import SessionProvider from '@/components/SessionProvider';
+// import { Toaster } from 'react-hot-toast';
 
 // const inter = Inter({ subsets: ['latin'] });
 
@@ -15,18 +13,19 @@
 
 // export default function RootLayout({
 //   children,
-// }: Readonly<{
+// }: {
 //   children: React.ReactNode;
-// }>) {
+// }) {
 //   return (
 //     <html lang="en">
 //       <body className={inter.className}>
-//         <SessionProvider>
-//           <Navbar />
-//           <main className="min-h-screen">{children}</main>
-//           <Footer />
-//           <Toaster position="top-right" />
-//         </SessionProvider>
+//         {/* Don't use useSession here - it blocks everything */}
+//         <Navbar />
+//         <main className="min-h-screen">{children}</main>
+//         <footer className="bg-gray-900 text-white">
+//           {/* Your footer content */}
+//         </footer>
+//         <Toaster position="top-right" />
 //       </body>
 //     </html>
 //   );
@@ -35,8 +34,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Navbar from '@/components/Navbar';
+// import Navbar from '@/components/Navbar';
 import { Toaster } from 'react-hot-toast';
+import AuthSessionProvider from '@/components/AuthSessionProvider';
+import Navbar from '@/components/Navbar';
+// import AuthSessionProvider from '@/components/AuthSessionProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -53,12 +55,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {/* Don't use useSession here - it blocks everything */}
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <footer className="bg-gray-900 text-white">
-          {/* Your footer content */}
-        </footer>
+        {/* 👇 CLIENT session hydration boundary */}
+        <AuthSessionProvider>
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+        </AuthSessionProvider>
+
+        <footer className="bg-gray-900 text-white" />
         <Toaster position="top-right" />
       </body>
     </html>

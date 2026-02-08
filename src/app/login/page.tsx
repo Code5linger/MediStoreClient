@@ -245,16 +245,15 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { Pill } from 'lucide-react';
-import { signIn } from '@/lib/auth-client';
 
 // import { signIn } from '@/lib/auth-client';
 
 export default function LoginPage() {
-  const router = useRouter();
+  // const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -303,32 +302,31 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await signIn.email(
-        {
+      const res = await fetch('/api/auth/sign-in/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // 🔥 critical
+        body: JSON.stringify({
           email: formData.email,
           password: formData.password,
-        },
-        {
-          onSuccess: async (ctx) => {
-            toast.success('Login successful!');
+        }),
+      });
 
-            // Wait a bit for the session to be set
-            await new Promise((resolve) => setTimeout(resolve, 500));
+      const data = await res.json();
 
-            // Force a hard navigation to ensure session is loaded
-            window.location.href = '/';
-          },
-          onError: (ctx) => {
-            const errorMessage = ctx.error.message || 'Login failed';
-            toast.error(errorMessage);
-            console.error('Login error:', ctx.error);
-          },
-        },
-      );
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'Login failed';
-      toast.error(errorMessage);
+      if (!res.ok) {
+        throw new Error(data.error || 'Login failed');
+      }
+
+      toast.success('Login successful!');
+
+      // Force hard reload to ensure session is loaded
+      window.location.href = '/';
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Login failed';
+      toast.error(message);
       console.error('Login error:', error);
     } finally {
       setLoading(false);
