@@ -76,6 +76,33 @@ export default function SellerDashboard() {
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('ALL');
   const [updatingOrderId, setUpdatingOrderId] = useState<number | null>(null);
 
+  useEffect(() => {
+    // Debug: Check cookies
+    console.log('=== COOKIE DEBUG ===');
+    console.log('All cookies:', document.cookie);
+    console.log('Has medistore cookie:', document.cookie.includes('medistore'));
+
+    // Debug: Make a test request
+    const testAuth = async () => {
+      try {
+        console.log('Testing auth...');
+        const response = await api.get('/medicine'); // Public endpoint
+        console.log('✅ Public endpoint works');
+
+        const sellerResponse = await api.get('/orders/seller/orders');
+        console.log('✅ Seller endpoint works!', sellerResponse.data);
+      } catch (error: any) {
+        console.error(
+          '❌ Error:',
+          error.response?.status,
+          error.response?.data,
+        );
+      }
+    };
+
+    testAuth();
+  }, []);
+
   // ── guard ──
   useEffect(() => {
     if (!session?.user || session.user.role !== 'SELLER') {

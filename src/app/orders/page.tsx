@@ -277,7 +277,7 @@ export default function OrdersPage() {
           <div className="bg-white rounded-lg shadow-md p-12 text-center">
             <Package className="w-16 h-16 text-gray-400 mx-auto mb-4" />
             <p className="text-gray-600 text-lg mb-4">
-              You haven't placed any orders yet
+              You have not placed any orders yet
             </p>
             <button
               onClick={() => router.push('/shop')}
