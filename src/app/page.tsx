@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+      <section className="bg-linear-to-r from-blue-600 to-blue-800 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-6">
@@ -181,68 +181,56 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-gray-300 py-10 mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Brand */}
+            <div>
+              <h3 className="text-white text-xl font-bold mb-3">MediStore</h3>
+              <p className="text-sm text-gray-400">
+                Your trusted online medicine shop. Quality medicines delivered
+                to your doorstep.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="text-white font-semibold mb-3">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/" className="hover:text-white transition">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/shop" className="hover:text-white transition">
+                    Shop
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/login" className="hover:text-white transition">
+                    Login
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="text-white font-semibold mb-3">Contact</h4>
+              <p className="text-sm text-gray-400">support@medistore.com</p>
+              <p className="text-sm text-gray-400">+880 1234-567890</p>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+            © {new Date().getFullYear()} MediStore. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
-
-// 'use client';
-
-// import { useEffect, useState } from 'react';
-// import Link from 'next/link';
-
-// export default function HomePage() {
-//   const [loading, setLoading] = useState(false);
-//   const [categories, setCategories] = useState([]);
-//   const [medicines, setMedicines] = useState([]);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         setLoading(true);
-
-//         const [categoriesRes, medicinesRes] = await Promise.all([
-//           fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
-//           fetch(`${process.env.NEXT_PUBLIC_API_URL}/medicine`),
-//         ]);
-
-//         if (categoriesRes.ok) {
-//           const catData = await categoriesRes.json();
-//           setCategories(catData.data || []);
-//         }
-
-//         if (medicinesRes.ok) {
-//           const medData = await medicinesRes.json();
-//           setMedicines(medData.data || []);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center">
-//         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="min-h-screen">
-//       <h1 className="text-4xl font-bold text-center py-8">
-//         Welcome to MediStore
-//       </h1>
-
-//       {/* Your content */}
-//       <div className="max-w-7xl mx-auto px-4">
-//         <p>Categories: {categories.length}</p>
-//         <p>Medicines: {medicines.length}</p>
-//       </div>
-//     </div>
-//   );
-// }

@@ -86,17 +86,17 @@ export default function SellerDashboard() {
     const testAuth = async () => {
       try {
         console.log('Testing auth...');
-        const response = await api.get('/medicine'); // Public endpoint
+        await api.get('/medicine'); // Public endpoint
         console.log('✅ Public endpoint works');
 
         const sellerResponse = await api.get('/orders/seller/orders');
         console.log('✅ Seller endpoint works!', sellerResponse.data);
-      } catch (error: any) {
-        console.error(
-          '❌ Error:',
-          error.response?.status,
-          error.response?.data,
-        );
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        } else {
+          console.error('Unknown error');
+        }
       }
     };
 
