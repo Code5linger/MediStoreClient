@@ -117,6 +117,130 @@
 //   };
 // };
 
+// 'use client';
+
+// import { createAuthClient } from 'better-auth/react';
+// import type { Session } from 'better-auth/types';
+
+// export interface CustomUser {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: boolean;
+//   image?: string | null;
+//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+// export interface CustomSession extends Omit<Session, 'user'> {
+//   user: CustomUser;
+// }
+
+// export const authClient = createAuthClient({
+//   baseURL:
+//     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+//     'https://medi-store-server-rho.vercel.app',
+//   fetchOptions: {
+//     credentials: 'include',
+//   },
+// });
+
+// export const { signIn, signUp, signOut } = authClient;
+
+// export const useSession = () => {
+//   return authClient.useSession() as {
+//     data: CustomSession | null;
+//     isPending: boolean;
+//     error: Error | null;
+//   };
+// };
+
+// src/lib/auth-client.ts
+
+// 'use client';
+
+// import { createAuthClient } from 'better-auth/react';
+// import type { Session } from 'better-auth/types';
+
+// export interface CustomUser {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: boolean;
+//   image?: string | null;
+//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+// export interface CustomSession extends Omit<Session, 'user'> {
+//   user: CustomUser;
+// }
+
+// export const authClient = createAuthClient({
+//   baseURL:
+//     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+//     'https://medi-store-server-rho.vercel.app',
+//   fetchOptions: {
+//     credentials: 'include',
+//   },
+// });
+
+// export const { signIn, signUp, signOut } = authClient;
+
+// // ✅ Add this hook here
+// export const useSession = () => {
+//   return authClient.useSession() as {
+//     data: CustomSession | null;
+//     isPending: boolean;
+//     error: Error | null;
+//   };
+// };
+
+// src/lib/auth-client.ts
+// !--V1--------------------------------------------
+// 'use client';
+
+// import { createAuthClient } from 'better-auth/react';
+// import type { Session } from 'better-auth/types';
+
+// export interface CustomUser {
+//   id: string;
+//   name: string;
+//   email: string;
+//   emailVerified: boolean;
+//   image?: string | null;
+//   role: 'CUSTOMER' | 'SELLER' | 'ADMIN';
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
+
+// export interface CustomSession extends Omit<Session, 'user'> {
+//   user: CustomUser;
+// }
+
+// export const authClient = createAuthClient({
+//   baseURL:
+//     process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+//     'https://medi-store-server-rho.vercel.app',
+//   fetchOptions: {
+//     credentials: 'include',
+//   },
+// });
+
+// export const { signIn, signUp, signOut } = authClient;
+
+// // ✅ Add this hook here
+// export const useSession = () => {
+//   return authClient.useSession() as {
+//     data: CustomSession | null;
+//     isPending: boolean;
+//     error: Error | null;
+//   };
+// };
+
+// !---V2--------------------------------------------
 'use client';
 
 import { createAuthClient } from 'better-auth/react';
@@ -137,10 +261,9 @@ export interface CustomSession extends Omit<Session, 'user'> {
   user: CustomUser;
 }
 
+// Use the environment variable directly - it's available at build time
 export const authClient = createAuthClient({
-  baseURL:
-    process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
-    'https://medi-store-server-rho.vercel.app',
+  baseURL: 'https://medi-store-server-rho.vercel.app',
   fetchOptions: {
     credentials: 'include',
   },
