@@ -1,37 +1,3 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   images: {
-//     remotePatterns: [
-//       {
-//         protocol: 'https',
-//         hostname: '**',
-//       },
-//     ],
-//   },
-
-//   // !---V14---------------------------
-//   // async rewrites() {
-//   //   return [
-//   //     {
-//   //       source: '/api/auth/:path*',
-//   //       // destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path`,
-//   //       destination: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/:path*`,
-//   //     },
-//   //   ];
-//   // },
-//   // !---V2--------------------------
-//   async rewrites() {
-//     return [
-//       {
-//         source: '/api/auth/:path*',
-//         destination: 'https://medi-store-server-rho.vercel.app/api/auth/:path*',
-//       },
-//     ];
-//   },
-// };
-
-// module.exports = nextConfig;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {

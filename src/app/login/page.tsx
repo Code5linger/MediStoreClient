@@ -16,47 +16,6 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  // !---V1-------------------------------------------------
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   console.log('🔐 Starting login...');
-  //   console.log('📧 Email:', formData.email);
-
-  //   try {
-  //     await signIn.email(
-  //       {
-  //         email: formData.email,
-  //         password: formData.password,
-  //       },
-  //       {
-  //         onSuccess: async (ctx) => {
-  //           console.log('✅ Login successful!', ctx);
-  //           toast.success('Login successful!');
-
-  //           // SPA-friendly: update server components / session
-  //           router.refresh(); // re-fetch session data
-  //           // setTimeout(() => router.push('/'), 50); // navigate to homepage
-  //           router.push('/');
-  //         },
-  //         onError: (ctx) => {
-  //           console.error('❌ Login error:', ctx.error);
-  //           toast.error(ctx.error.message || 'Login failed');
-  //         },
-  //       },
-  //     );
-  //   } catch (error) {
-  //     console.error('💥 Caught error:', error);
-  //     const errorMessage =
-  //       error instanceof Error ? error.message : 'Login failed';
-  //     toast.error(errorMessage);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // !---V2-------------------------------------------------
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
